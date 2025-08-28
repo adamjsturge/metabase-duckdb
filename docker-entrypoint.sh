@@ -5,15 +5,15 @@ set -e
 PUID=${PUID:-2000}
 PGID=${PGID:-2000}
 
-# Create group if it doesn't exist
-if ! getent group metabase >/dev/null; then
+# Find or create group for the desired GID
+TARGET_GROUP=$(getent group "$PGID" | cut -d: -f1 || echo "")
+if [ -z "$TARGET_GROUP" ]; then
+    # GID doesn't exist, create metabase group
     groupadd -g "$PGID" metabase
+    TARGET_GROUP="metabase"
 else
-    # Update existing group GID if needed
-    current_gid=$(getent group metabase | cut -d: -f3)
-    if [ "$current_gid" != "$PGID" ]; then
-        groupmod -g "$PGID" metabase
-    fi
+    # GID already exists, use that group
+    echo "Using existing group '$TARGET_GROUP' with GID $PGID"
 fi
 
 # Create or update user
@@ -22,7 +22,8 @@ if ! getent passwd metabase >/dev/null; then
 else
     # Update existing user UID/GID if needed
     current_uid=$(getent passwd metabase | cut -d: -f3)
-    if [ "$current_uid" != "$PUID" ]; then
+    current_gid=$(getent passwd metabase | cut -d: -f4)
+    if [ "$current_uid" != "$PUID" ] || [ "$current_gid" != "$PGID" ]; then
         usermod -u "$PUID" -g "$PGID" metabase
     fi
 fi
