@@ -1,4 +1,4 @@
-FROM openjdk:19-buster
+FROM openjdk:21-buster
 
 ENV MB_PLUGINS_DIR=/home/plugins/
 
