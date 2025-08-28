@@ -35,7 +35,7 @@ docker run -d \
 
 ### Unraid Compatibility
 
-This image is fully compatible with Unraid and supports `PUID`/`PGID` environment variables for proper file permissions:
+This image is fully compatible with Unraid and supports `PUID`/`PGID` environment variables for proper file permissions. The entrypoint script intelligently handles existing system groups (like GID 100 = `users`) without conflicts:
 
 ```bash
 docker run -d \
