@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  metabase:
+    build: .
+    container_name: metabase-duckdb
+    ports:
+      - "3000:3000"
+    environment:
+      - MB_DB_TYPE=h2
+      - MB_DB_FILE=/data/metabase.db
+      - JAVA_TIMEZONE=UTC
+      - MB_PLUGINS_DIR=/plugins/
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+networks:
+  default:
+    name: metabase-network

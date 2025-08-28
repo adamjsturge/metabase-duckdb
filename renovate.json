@@ -1,0 +1,57 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "timezone": "UTC",
+  "schedule": ["before 6am on monday"],
+  "labels": ["dependencies"],
+  "assigneesFromCodeOwners": true,
+  "reviewersFromCodeOwners": true,
+  "rangeStrategy": "replace",
+  "semanticCommits": "enabled",
+  "separateMajorMinor": true,
+  "separateMultipleMajor": true,
+  "regexManagers": [
+    {
+      "fileMatch": ["^Dockerfile$"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)\\s*ADD https://downloads\\.metabase\\.com/v(?<currentValue>.*?)/metabase\\.jar"
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "metabase/metabase"
+    },
+    {
+      "fileMatch": ["^Dockerfile$"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)\\s*ADD https://github\\.com/MotherDuck-Open-Source/metabase_duckdb_driver/releases/download/(?<currentValue>.*?)/duckdb\\.metabase-driver\\.jar"
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "MotherDuck-Open-Source/metabase_duckdb_driver"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": ["github-releases"],
+      "matchPackageNames": ["metabase/metabase"],
+      "extractVersion": "^v?(?<version>.*)$"
+    },
+    {
+      "matchDatasources": ["github-releases"],
+      "matchPackageNames": ["MotherDuck-Open-Source/metabase_duckdb_driver"],
+      "extractVersion": "^v?(?<version>.*)$"
+    },
+    {
+      "matchPackageNames": ["metabase/metabase", "MotherDuck-Open-Source/metabase_duckdb_driver"],
+      "commitMessageTopic": "{{depName}}",
+      "commitMessageExtra": "to v{{newValue}}",
+      "semanticCommitType": "chore",
+      "semanticCommitScope": "deps"
+    }
+  ],
+  "automerge": false,
+  "platformAutomerge": false,
+  "prConcurrentLimit": 2,
+  "prHourlyLimit": 1,
+  "branchConcurrentLimit": 2
+}

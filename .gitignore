@@ -1,0 +1,32 @@
+# Metabase data files
+/data/*.db
+/data/*.h2.db
+/data/*.mv.db
+/data/*.trace.db
+/data/*.log
+
+# DuckDB files
+/data/*.duckdb
+/data/*.db
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Docker
+.docker/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
