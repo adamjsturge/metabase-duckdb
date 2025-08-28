@@ -33,6 +33,28 @@ docker run -d \
   metabase-duckdb
 ```
 
+### Unraid Compatibility
+
+This image is fully compatible with Unraid and supports `PUID`/`PGID` environment variables for proper file permissions:
+
+```bash
+docker run -d \
+  --name='metabase' \
+  -e TZ="America/Los_Angeles" \
+  -e 'MB_DB_TYPE'='postgres' \
+  -e 'MB_DB_HOST'='your-db-host' \
+  -e 'MB_DB_PORT'='5432' \
+  -e 'MB_DB_DBNAME'='metabase' \
+  -e 'MB_DB_USER'='your-db-user' \
+  -e 'MB_DB_PASS'='your-db-password' \
+  -e 'PUID'='99' \
+  -e 'PGID'='100' \
+  -p '3000:3000/tcp' \
+  -v '/mnt/user/appdata/metabase/plugins':'/plugins':'rw' \
+  -v '/mnt/user/appdata/metabase/data':'/data':'rw' \
+  your-dockerhub-username/metabase-duckdb
+```
+
 ## Configuration
 
 ### Environment Variables

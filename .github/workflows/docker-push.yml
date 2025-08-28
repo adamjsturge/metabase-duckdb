@@ -7,12 +7,14 @@ on:
       - ".github/workflows/docker-push.yml"
       - "Dockerfile"
       - "docker-compose.yml"
+      - "docker-entrypoint.sh"
       - "README.md"
   pull_request:
     branches: ["main"]
     paths:
       - "Dockerfile"
       - "docker-compose.yml"
+      - "docker-entrypoint.sh"
 
 env:
   REGISTRY: docker.io
